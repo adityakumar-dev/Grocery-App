@@ -21,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 onPressed: () async {
                   await AuthService().googleSignIn(context);
                 },
-                child: Text("Sign In"))
+                child: const Text("Sign In"))
           ],
         ),
       ),

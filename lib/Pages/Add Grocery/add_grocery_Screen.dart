@@ -56,17 +56,19 @@ class _AddGroceryScreenState extends State<AddGroceryScreen> {
       quantity: quantity,
       price: price,
       date: selectedDate,
-      id: widget.item?.id ?? '', // Ensure ID is properly set
     );
 
     final groceryListProvider =
         Provider.of<GroceryListProvider>(context, listen: false);
 
     if (widget.item == null) {
-      // Add new item
+      // Adding a new grocery item (Firestore generates ID)
       await groceryListProvider.addGrocery(groceryItem);
     } else {
-      await groceryListProvider.updateGrocery(widget.item!.id!, groceryItem);
+      // Updating the existing grocery item using Firestore document ID directly
+      // final docId = groceryListProvider.getDocumentIdForItem(widget.index!);
+      // await groceryListProvider.updateGrocery(docId, groceryItem);
+      await groceryListProvider.updateGrocery(widget.index!, groceryItem);
     }
 
     Navigator.of(context).pop();

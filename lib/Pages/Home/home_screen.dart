@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Pages/Add%20Grocery/add_grocery_Screen.dart';
 import 'package:grocery_app/Services/providers/gocery_list_provider.dart';
-import 'package:intl/intl.dart';
 import 'package:grocery_app/model/grocery_model.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,13 +13,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // List<GroceryItem> groceryList = [
+  //   GroceryItem(
+  //       name: 'Milk',
+  //       quantity: 1,
+  //       date: DateTime.now().add(const Duration(days: 1)),
+  //       price: 1.0),
+  //   GroceryItem(
+  //       name: 'Eggs',
+  //       quantity: 12,
+  //       price: 2.1,
+  //       date: DateTime.now().add(Duration(days: 3))),
+  //   GroceryItem(
+  //       name: 'Bread',
+  //       quantity: 2,
+  //       price: 10.0,
+  //       date: DateTime.now().add(Duration(days: 2))),
+  // ];
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final groceryListProvider =
           Provider.of<GroceryListProvider>(context, listen: false);
-      groceryListProvider.fetchGroceryList(); // Fetch data from Firestore
+      // groceryListProvider.fetchGroceryList();
+      // groceryListProvider.addGroceryList(groceryList);
+      groceryListProvider.fetchGroceryList();
     });
   }
 
@@ -113,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       );
 
                                       if (shouldDelete == true) {
-                                        groceryListProvider.removeGrocery(
-                                            item.id!); // Use item ID
+                                        groceryListProvider
+                                            .removeGrocery(index);
                                       }
                                     },
                                   ),
