@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/Pages/Add%20Grocery/add_grocery_Screen.dart';
+import 'package:grocery_app/Pages/qrPage/qr_page.dart';
+import 'package:grocery_app/Pages/qrPage/qr_scanner_page.dart';
+import 'package:grocery_app/Services/Auth/auth_service.dart';
 import 'package:grocery_app/Services/providers/gocery_list_provider.dart';
-import 'package:grocery_app/model/grocery_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -45,13 +47,37 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         title: const Text('Grocery List'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => Navigator.pushNamed(context, '/add'),
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: const Icon(Icons.qr_code),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QrScannerPage(),
+                  )),
+            ),
           ),
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => Navigator.pushNamed(context, '/add'),
+            ),
+          ),
+          Container(
+            child: IconButton(
+                onPressed: () {
+                  AuthService().signOut(context);
+                },
+                icon: const Icon(Icons.logout)),
+          )
         ],
       ),
       body: Consumer<GroceryListProvider>(
@@ -79,6 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             elevation: 4,
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        QrScreen(groceryItem: item),
+                                  )),
                               contentPadding: const EdgeInsets.all(16),
                               title: Text(
                                 item.name,

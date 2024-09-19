@@ -7,5 +7,5 @@ final app_routes = {
   '/': (context) => const SplashScreen(),
   '/auth': (context) => const AuthScreen(),
   '/home': (context) => const HomeScreen(),
-  '/add': (context) => const AddGroceryScreen()
+  '/add': (context) => const AddGroceryScreen(),
 };

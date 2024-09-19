@@ -34,10 +34,18 @@ class AuthService {
           idToken: googleSignInAuthentication.idToken,
         );
         print("third step");
-        // Sign in to Firebase with the credential
+        // Navigator.of(context).pop();
+
         await firebaseAuth.signInWithCredential(credential);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (route) => false,
+        );
       }
     } catch (e) {
+      Navigator.of(context).pop();
+
       // Handle sign-in errors
       print('Sign-in error: ${e.toString()}');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -46,16 +54,14 @@ class AuthService {
           style: const TextStyle(color: Colors.red),
         ),
       ));
-    } finally {
-      // Dismiss the loading indicator
-      Navigator.of(context).pop();
     }
   }
 
   // Sign out method
-  Future<void> signOut() async {
+  Future<void> signOut(context) async {
     await firebaseAuth.signOut();
     await _googleSignIn.signOut();
+    Navigator.pushReplacementNamed(context, '/auth');
   }
 
   // Get current user
