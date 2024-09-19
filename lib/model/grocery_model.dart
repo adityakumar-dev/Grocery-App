@@ -19,7 +19,7 @@ class GroceryItem {
       'name': name,
       'quantity': quantity,
       'price': price,
-      'date': Timestamp.fromDate(date), // Convert DateTime to Timestamp
+      'date': Timestamp.fromDate(date),
     };
   }
 
@@ -28,7 +28,7 @@ class GroceryItem {
       name: map['name'] ?? '',
       quantity: map['quantity'] ?? 1,
       price: map['price']?.toDouble() ?? 0.0,
-      date: (map['date'] as Timestamp).toDate(),
+      date: (map['date'] as Timestamp).toDate() ?? DateTime.now(),
     );
   }
 }

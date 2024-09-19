@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,12 +8,18 @@ import 'package:grocery_app/model/grocery_model.dart';
 class QrScreen extends StatelessWidget {
   final GroceryItem groceryItem;
 
-  QrScreen({super.key, required this.groceryItem});
+  const QrScreen({super.key, required this.groceryItem});
 
   String generateQr() {
     final dm = Barcode.dataMatrix();
+    // jsonEncode(groceryItem.toMap());
     return dm.toSvg(
-      "Name: ${groceryItem.name}\nQuantity: ${groceryItem.quantity}\nPrice: ${groceryItem.price}\nDate: ${groceryItem.date}",
+      jsonEncode({
+        'name': groceryItem.name,
+        'price': groceryItem.price,
+        'date': groceryItem.date.toString(),
+        'quantity': groceryItem.quantity
+      }),
       width: 300,
       height: 300,
     );

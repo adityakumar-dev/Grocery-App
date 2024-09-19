@@ -54,18 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Grocery List'),
         actions: [
           Container(
-            margin: EdgeInsets.only(right: 5),
+            margin: const EdgeInsets.only(right: 5),
             child: IconButton(
               icon: const Icon(Icons.qr_code),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QrScannerPage(),
+                    builder: (context) => const QrScannerPage(),
                   )),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 5),
+            margin: const EdgeInsets.only(right: 5),
             child: IconButton(
               icon: const Icon(Icons.add),
               onPressed: () => Navigator.pushNamed(context, '/add'),

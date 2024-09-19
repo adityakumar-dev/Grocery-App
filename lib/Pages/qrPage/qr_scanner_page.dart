@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,32 +18,8 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   String _scanResult = 'Scan a QR code';
   GroceryItem _parseQrData(String data) {
-    final lines = data.split('\n');
-    final dataMap = <String, dynamic>{};
-
-    for (var line in lines) {
-      final parts = line.split(':');
-      if (parts.length == 2) {
-        final key = parts[0].trim().toLowerCase();
-        final value = parts[1].trim();
-
-        switch (key) {
-          case 'name':
-            dataMap['name'] = value;
-            break;
-          case 'quantity':
-            dataMap['quantity'] = int.tryParse(value) ?? 0;
-            break;
-          case 'price':
-            dataMap['price'] = double.tryParse(value) ?? 0.0;
-            break;
-          case 'date':
-            dataMap['date'] = value;
-            break;
-        }
-      }
-    }
-
+    final Map<String, dynamic> dataMap = jsonDecode(data);
+    dataMap['date'] = Timestamp.fromDate(DateTime.parse(dataMap['date']));
     return GroceryItem.fromMap(dataMap);
   }
 
@@ -50,15 +29,20 @@ class _QrScannerPageState extends State<QrScannerPage> {
         '#ff6666',
         'Cancel',
         true,
-        ScanMode.BARCODE, // Scan mode
+        ScanMode.BARCODE,
       );
 
       if (scanResult != '-1') {
         setState(() {
           _scanResult = scanResult;
+          // print(jsonDecode(scanResult) as Map<String, dynamic>);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final provider =
+                Provider.of<GroceryListProvider>(context, listen: false);
 
+            provider.addGrocery(_parseQrData(_scanResult));
+          });
           print(_scanResult);
-          GroceryItem item = _parseQrData(_scanResult);
         });
         Fluttertoast.showToast(
           msg: "Scanned Result: $scanResult",
